@@ -17,6 +17,7 @@ public class Detector : MonoBehaviour {
 
 	public event Action<GameObject>	onDetectElement = delegate {};
 	public event Action				onBeginDetect = delegate {};
+	public event Action				onNothingDetected = delegate {};
 
 	public List<GameObject> 		currentListElementDetected = null;
 	#endregion
@@ -68,6 +69,10 @@ public class Detector : MonoBehaviour {
 					onDetectElement(hitColliders[i].gameObject);
 				}
 			}
+		}
+
+		if (currentListElementDetected.Count == 0) {
+			onNothingDetected();
 		}
 	}
 

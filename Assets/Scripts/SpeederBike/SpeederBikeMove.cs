@@ -80,7 +80,8 @@ public class SpeederBikeMove : MonoBehaviour {
 
 	#region EVENTS
 	private void HandleonDetectElement (GameObject obj){
-		weapon.SpawnElement ();
+		Vector3 direction = obj.transform.position - weapon.spawnPoint [0].position;
+		weapon.SpawnElement (direction.normalized);
 	}
 	#endregion
 }

@@ -35,11 +35,16 @@ public class Spawner : MonoBehaviour {
 	#endregion
 	
 	#region METHODS_CUSTOM
-	public virtual void SpawnElement(){
+	public virtual void SpawnElement(Vector3 direction = default(Vector3)){
 		if (reloadSpawn){
 			reloadSpawn = false;
 
 			GameObject spawnElementGO = GetSpawnElement ();
+
+			if (direction != Vector3.zero){
+				spawnElementGO.transform.forward = direction;
+			}
+
 			SpawnElementAction (spawnElementGO);
 			onSpawnElement();
 		}
@@ -72,13 +77,13 @@ public class Spawner : MonoBehaviour {
 		if (spawnElements.Count == 0){
 			int randomElement = UnityEngine.Random.Range(0, spawnElementsPrefab.Length-1);
 
-			spawnElementInstance = (GameObject)Instantiate(spawnElementsPrefab[randomElement], spawnPointSelected.position, spawnPointSelected.rotation);
+			spawnElementInstance = (GameObject)Instantiate(spawnElementsPrefab[randomElement], spawnPointSelected.position, Quaternion.identity);
 			spawnElementInstance.name = spawnElementInstance.name+"_"+totalSpawnerElementCreated;
 			totalSpawnerElementCreated++;
 		}else{
 			spawnElementInstance = spawnElements.Dequeue();
 			spawnElementInstance.transform.position = spawnPointSelected.position;
-			spawnElementInstance.transform.rotation = spawnPointSelected.rotation;
+			spawnElementInstance.transform.rotation = Quaternion.identity;
 			spawnElementInstance.SetActive(true);
 		}
 		

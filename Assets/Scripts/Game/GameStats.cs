@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Game {
+public class GameStats {
 	#region STATIC_ENUM_CONSTANTS
 	#endregion
 	
 	#region FIELDS
-	public int totalEnemies;
+	public float time;
 	#endregion
 	
 	#region ACCESSORS
 	#endregion
 	
 	#region METHODS_CONSTRUCTOR
-	public Game(){
-		totalEnemies = 10;
+	public GameStats(){
+		time = 0;
 	}
 	#endregion
 	
