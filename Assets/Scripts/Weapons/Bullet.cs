@@ -10,6 +10,7 @@ public class Bullet : SpawnElement {
 	
 	#region ACCESSORS
 	public float		bulletSpeed = 10;
+	public int			damage = 1;
 
 	private Rigidbody	bulletRigidbody;
 	#endregion
@@ -20,7 +21,10 @@ public class Bullet : SpawnElement {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		Debug.Log ("Choco...." + this.name);
+		if (collision.gameObject.layer == AppLayers.LAYER_ENEMY) {
+			collision.gameObject.GetComponent<Health>().Damage(damage);
+		}
+
 		Desactive ();
 	}
 	#endregion

@@ -106,7 +106,7 @@ public class ForestSlot : MonoBehaviour {
 			GameObject prefabSelected = forestPrefab.treePrefabs[UnityEngine.Random.Range(0, forestPrefab.treePrefabs.Length)];
 			GameObject treeGO = (GameObject)Instantiate(
 				prefabSelected, 
-				new Vector3(this.transform.position.x + UnityEngine.Random.Range((float)(-sizeSlot/2f), (float)(sizeSlot/2f)), UnityEngine.Random.Range(-0.2f, -0.2f), this.transform.position.z + UnityEngine.Random.Range((float)(-sizeSlot/2f), (float)(sizeSlot/2f))),
+				new Vector3(this.transform.position.x + UnityEngine.Random.Range((float)(-sizeSlot/2f), (float)(sizeSlot/2f)), UnityEngine.Random.Range(-0.2f, -1.5f), this.transform.position.z + UnityEngine.Random.Range((float)(-sizeSlot/2f), (float)(sizeSlot/2f))),
 				Quaternion.identity);
 			treeGO.transform.parent = this.transform;
 			treeDecorations[i] = treeGO;

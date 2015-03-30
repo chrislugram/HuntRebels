@@ -14,11 +14,13 @@ public class EnemyTower : MonoBehaviour {
 	public STATE_TOWER						stateTower = STATE_TOWER.WAITING;
 	public float							reloadTime = 1;
 	public DetectorFOV						detector;
+	public EnemyUI							enemyUI;
 
 	protected Spawner						weapon;
 	protected Transform						towerTransform;
 	protected Transform						characterTransform;
 	protected EnemyTowerAnimationController	animationController;
+	protected Health						healthEnemy;
 
 	protected float 						currentReloadTime = 0;
 	#endregion
@@ -32,8 +34,12 @@ public class EnemyTower : MonoBehaviour {
 		detector.onNothingDetected += HandleonNothingDetected;
 		
 		weapon = GetComponent<Spawner> ();
-
 		animationController = GetComponent<EnemyTowerAnimationController> ();
+		healthEnemy = GetComponent<Health> ();
+		healthEnemy.onDeath += HandleonDeath;
+		healthEnemy.onReciveDamage += HandleonReciveDamage;
+
+		enemyUI.UpdateEnemyUI (1);
 	}
 
 	void OnDestroy(){
@@ -86,6 +92,15 @@ public class EnemyTower : MonoBehaviour {
 	#endregion
 	
 	#region EVENTS
+	protected void HandleonReciveDamage (float percHealth){
+		enemyUI.UpdateEnemyUI (percHealth);
+	}
+
+	protected void HandleonDeath (){
+		GameManager.EnemyDestroyed ();
+		Destroy (this.gameObject);
+	}
+
 	protected void HandleonDetectElement (GameObject obj){
 		if (characterTransform == null) {
 			characterTransform = obj.transform;

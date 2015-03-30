@@ -58,7 +58,7 @@ public class ForestGenerator : MonoBehaviour {
 			previousCellZCharacter = -1;
 			CreateGround ();
 			GenerateForestSlots ();
-			MoveCharacter();
+			CreateCharacter();
 			GenerateEnemies ();
 		}
 
@@ -147,7 +147,9 @@ public class ForestGenerator : MonoBehaviour {
 		}
 	}
 
-	public void MoveCharacter(){
+	public void CreateCharacter(){
+		characterTransform = GameManager.CreateCharacter ().transform;
+
 		int indexX = UnityEngine.Random.Range (0, this.ForestSlotLenght);
 		int indexZ = UnityEngine.Random.Range (0, this.ForestSlotLenght);
 
