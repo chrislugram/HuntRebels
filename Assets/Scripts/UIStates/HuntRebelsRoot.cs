@@ -19,6 +19,7 @@ public class HuntRebelsRoot : RootApp {
 	#region METHODS_CUSTOM
 	protected override void InitRootApp (){
 		//Inicializo Sistemas
+		TaskManager.Init ();
 			
 		//Inicializamos los estados
 		states = new Dictionary<StateReferenceApp.TYPE_STATE, string> ();

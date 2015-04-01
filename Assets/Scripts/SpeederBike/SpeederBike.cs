@@ -17,6 +17,7 @@ public class SpeederBike : MonoBehaviour {
 	private float			rotateAngle = 0;
 	private Spawner			weapon;
 	private DetectorFOV		detector;
+	private bool			runFlag = false;
 	#endregion
 	
 	#region ACCESSORS
@@ -28,11 +29,15 @@ public class SpeederBike : MonoBehaviour {
 		weapon = this.GetComponent<Spawner> ();
 		detector = GetComponent<DetectorFOV> ();
 		detector.onDetectElement += HandleonDetectElement;
+
+		runFlag = false;
 	}
 
 	void Update(){
-		UpdateDirection ();
-		UpdateSpeed ();
+		if (runFlag) {
+			UpdateDirection ();
+			UpdateSpeed ();
+		}
 		UpdateModelRotation ();
 	}
 
@@ -49,6 +54,10 @@ public class SpeederBike : MonoBehaviour {
 	#endregion
 	
 	#region METHODS_CUSTOM
+	public void Run(){
+		runFlag = true;
+	}
+
 	private void UpdateDirection(){
 		directionMove = this.transform.forward;
 		rotateAngle = 0;

@@ -23,10 +23,6 @@ public static class AppScenes{
 	public static readonly string	SCENE_GAME = "Game";
 }
 
-public static class AppGameFlag{
-	public static readonly bool 	PAUSE	= false;
-}
-
 public static class AppFiles{
 	public static readonly string 	FILE_USER = Application.persistentDataPath+"/configuration.json";
 	public static readonly string	RESOURCES_FILE_USER = "JSON/configuration";
