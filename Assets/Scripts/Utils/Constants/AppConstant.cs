@@ -18,10 +18,9 @@ public static class AppLayers{
 }
 
 public static class AppScenes{
-	public static readonly string	SCENE_INIT = "0_Init";
-	public static readonly string	SCENE_TAVERN = "1_Tavern";
-	public static readonly string	SCENE_MAIN_MENU = "2_MainMenu";
-	public static readonly string	SCENE_COMBAT = "3_Combat";
+	public static readonly string	SCENE_INIT = "Init";
+	public static readonly string	SCENE_MAIN_MENU = "Menu";
+	public static readonly string	SCENE_GAME = "Game";
 }
 
 public static class AppGameFlag{
