@@ -51,17 +51,6 @@ public class ForestGenerator : MonoBehaviour {
 	
 	#region METHODS_UNITY
 	void Update(){
-		//Hack para arrancar la creacion del bosque
-		if (Input.GetKeyDown (KeyCode.F)) {
-			generated = true;
-			previousCellXCharacter = -1;
-			previousCellZCharacter = -1;
-			CreateGround ();
-			GenerateForestSlots ();
-			CreateCharacter();
-			GenerateEnemies ();
-		}
-
 		//Codigo real, comprobando la posicion del Personaje
 		if (generated) {
 			int cellXCharacter = Mathf.Abs(Mathf.RoundToInt (InitForest - (characterTransform.position.x))); //  (((sizeSquad/2f)-parentForest.transform.position.x) / sizeSquad);
@@ -78,6 +67,17 @@ public class ForestGenerator : MonoBehaviour {
 	#endregion
 	
 	#region METHODS_CUSTOM
+	public void CreateForest(){
+		previousCellXCharacter = -1;
+		previousCellZCharacter = -1;
+		CreateGround ();
+		GenerateForestSlots ();
+		CreateCharacter();
+		GenerateEnemies ();
+
+		generated = true;
+	}
+
 	public void CreateGround(){
 		Mesh mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;

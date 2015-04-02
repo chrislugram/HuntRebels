@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public static class GameManager {
@@ -44,8 +44,8 @@ public static class GameManager {
 		set{ inputMode = value; }
 	}
 
-	public static int	Time{
-		get{ return currentGameStats.time; }
+	public static int	TimeGame{
+		get{ return currentGameStats.timeGame; }
 	}
 
 	public static bool	InGame{
@@ -113,7 +113,7 @@ public static class GameManager {
 		while (true) {
 			yield return new WaitForSeconds(0.1f);
 
-			currentGameStats.time += 100;
+			currentGameStats.timeGame += 100;
 		}
 	}
 	#endregion

@@ -34,8 +34,8 @@ public class SpeederBike : MonoBehaviour {
 	}
 
 	void Update(){
+		UpdateDirection ();
 		if (runFlag) {
-			UpdateDirection ();
 			UpdateSpeed ();
 		}
 		UpdateModelRotation ();
@@ -59,18 +59,23 @@ public class SpeederBike : MonoBehaviour {
 	}
 
 	private void UpdateDirection(){
-		directionMove = this.transform.forward;
+		Vector3 newDirectionMove = this.transform.forward;
 		rotateAngle = 0;
 
 		if (Input.GetKey (KeyCode.A)) {
-			directionMove += -this.transform.right;
+			newDirectionMove += -this.transform.right;
 			rotateAngle = 1;
 		} else if (Input.GetKey (KeyCode.D)) {
-			directionMove += this.transform.right;
+			newDirectionMove += this.transform.right;
 			rotateAngle = -1;
 		}
 
-		directionMove = directionMove.normalized;
+		newDirectionMove = newDirectionMove.normalized;
+
+		directionMove = Vector3.Lerp (directionMove, newDirectionMove, Time.deltaTime * accelerationRotation);
+
+		this.transform.LookAt (this.transform.position + directionMove.normalized);
+
 	}
 
 	private void UpdateModelRotation(){
@@ -83,7 +88,6 @@ public class SpeederBike : MonoBehaviour {
 
 	private void UpdateSpeed(){
 		rigidbodySB.velocity = Vector3.Lerp (rigidbodySB.velocity, directionMove * maxVelocity, Time.deltaTime * acceleration);
-		this.transform.LookAt (this.transform.position + rigidbodySB.velocity.normalized);
 	}
 	#endregion
 

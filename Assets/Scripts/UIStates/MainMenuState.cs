@@ -47,6 +47,7 @@ public class MainMenuState : StateApp {
 
 	public void OnPlayButtonAction(){
 		GameManager.SetGame (newGame);
+		rootApp.ChangeState (StateReferenceApp.TYPE_STATE.GAME, AppScenes.SCENE_GAME);
 	}
 	#endregion
 }

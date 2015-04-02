@@ -6,8 +6,8 @@ public class GameStats {
 	#endregion
 	
 	#region FIELDS
-	public float 	time;
-	public int		totalEnemyDestroyed;
+	public int 	timeGame;
+	public int	totalEnemyDestroyed;
 	#endregion
 	
 	#region ACCESSORS
@@ -15,7 +15,7 @@ public class GameStats {
 	
 	#region METHODS_CONSTRUCTOR
 	public GameStats(){
-		time = 0;
+		timeGame = 0;
 		totalEnemyDestroyed = 0;
 	}
 	#endregion
