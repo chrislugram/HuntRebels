@@ -21,6 +21,9 @@ public class SpeederBike : MonoBehaviour {
 	#endregion
 	
 	#region ACCESSORS
+	public bool Waiting{
+		get { return !runFlag; }
+	}
 	#endregion
 	
 	#region METHODS_UNITY
@@ -31,6 +34,9 @@ public class SpeederBike : MonoBehaviour {
 		detector.onDetectElement += HandleonDetectElement;
 
 		runFlag = false;
+
+		InputGame.onMoveToLeft += HandleonMoveToLeft;
+		InputGame.onMoveToRight += HandleonMoveToRight;
 	}
 
 	void Update(){
@@ -39,6 +45,12 @@ public class SpeederBike : MonoBehaviour {
 			UpdateSpeed ();
 		}
 		UpdateModelRotation ();
+	}
+
+	void OnDestroy(){
+		detector.onDetectElement -= HandleonDetectElement;
+		InputGame.onMoveToLeft -= HandleonMoveToLeft;
+		InputGame.onMoveToRight -= HandleonMoveToRight;
 	}
 
 	void OnCollisionEnter(Collision collision){
@@ -54,20 +66,18 @@ public class SpeederBike : MonoBehaviour {
 	#endregion
 	
 	#region METHODS_CUSTOM
-	public void Run(){
+	public void Run(int maxSpeed){
+		this.maxVelocity = maxSpeed;
 		runFlag = true;
 	}
 
 	private void UpdateDirection(){
 		Vector3 newDirectionMove = this.transform.forward;
-		rotateAngle = 0;
 
-		if (Input.GetKey (KeyCode.A)) {
+		if (rotateAngle == 1) {
 			newDirectionMove += -this.transform.right;
-			rotateAngle = 1;
-		} else if (Input.GetKey (KeyCode.D)) {
+		} else if (rotateAngle == -1) {
 			newDirectionMove += this.transform.right;
-			rotateAngle = -1;
 		}
 
 		newDirectionMove = newDirectionMove.normalized;
@@ -75,7 +85,6 @@ public class SpeederBike : MonoBehaviour {
 		directionMove = Vector3.Lerp (directionMove, newDirectionMove, Time.deltaTime * accelerationRotation);
 
 		this.transform.LookAt (this.transform.position + directionMove.normalized);
-
 	}
 
 	private void UpdateModelRotation(){
@@ -84,6 +93,8 @@ public class SpeederBike : MonoBehaviour {
 		} else {
 			modelTransform.localRotation = Quaternion.Lerp (modelTransform.localRotation, Quaternion.identity, Time.deltaTime * accelerationRotation);
 		}
+
+		rotateAngle = 0;
 	}
 
 	private void UpdateSpeed(){
@@ -94,7 +105,19 @@ public class SpeederBike : MonoBehaviour {
 	#region EVENTS
 	private void HandleonDetectElement (GameObject obj){
 		//Vector3 direction = obj.transform.position - weapon.spawnPoint [0].position;
-		weapon.SpawnElement (this.transform.forward);
+		if (runFlag) {
+			weapon.SpawnElement (this.transform.forward);
+		}
+	}
+
+	private void HandleonMoveToRight (){
+		//newDirectionMove += -this.transform.right;
+		rotateAngle = -1;
+	}
+	
+	private void HandleonMoveToLeft (){
+		//newDirectionMove += this.transform.right;
+		rotateAngle = 1;
 	}
 	#endregion
 }

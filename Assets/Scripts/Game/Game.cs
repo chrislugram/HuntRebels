@@ -7,6 +7,7 @@ public class Game {
 	
 	#region FIELDS
 	public int totalEnemies;
+	public int maxSpeed;
 	#endregion
 	
 	#region ACCESSORS
@@ -14,7 +15,8 @@ public class Game {
 	
 	#region METHODS_CONSTRUCTOR
 	public Game(){
-		totalEnemies = 10;
+		totalEnemies = 5;
+		maxSpeed = 10;
 	}
 	#endregion
 	

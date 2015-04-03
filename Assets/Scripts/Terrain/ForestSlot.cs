@@ -112,7 +112,7 @@ public class ForestSlot : MonoBehaviour {
 			treeDecorations[i] = treeGO;
 		}
 
-		Debug.Log ("Identity: " + Quaternion.identity);
+		//Debug.Log ("Identity: " + Quaternion.identity);
 	}
 
 	private void SetIndexPosition(int x, int z){

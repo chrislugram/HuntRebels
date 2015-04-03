@@ -8,6 +8,7 @@ public class MainMenuState : StateApp {
 	
 	#region FIELDS
 	public Text		labelTotalEnemies;
+	public Text		labelMaxSpeed;
 	public Text		labelBestTime;
 
 	private Game	newGame;
@@ -43,6 +44,11 @@ public class MainMenuState : StateApp {
 		} else {
 			labelBestTime.text = Util.MilisecondsInClockFormat(maxMiliSeconds);
 		}
+	}
+
+	public void OnMaxSpeedChange(Slider sliderMaxSpeed){
+		newGame.maxSpeed = (int)sliderMaxSpeed.value;
+		labelMaxSpeed.text = "" + newGame.maxSpeed;
 	}
 
 	public void OnPlayButtonAction(){

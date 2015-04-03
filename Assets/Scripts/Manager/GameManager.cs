@@ -60,8 +60,10 @@ public static class GameManager {
 	}
 
 	public static void StartGame(){
-		characterGO.GetComponent<SpeederBike> ().Run ();
-		timeTask = TaskManager.Launch (TimeCounter ());
+		if (characterGO.GetComponent<SpeederBike> ().Waiting) {
+			characterGO.GetComponent<SpeederBike> ().Run (currentGame.maxSpeed);
+			timeTask = TaskManager.Launch (TimeCounter ());
+		}
 	}
 
 	public static GameObject CreateCharacter(){
