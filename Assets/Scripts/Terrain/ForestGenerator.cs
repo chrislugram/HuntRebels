@@ -178,7 +178,7 @@ public class ForestGenerator : MonoBehaviour {
 	}
 
 	public void UpdateForest(int newCellX, int newCellZ){
-		Debug.Log (" " + newCellX + ", " + newCellZ);
+		//Debug.Log (" " + newCellX + ", " + newCellZ);
 		for (int i=0; i<this.ForestSlotLenght; i++) {
 			for(int j=0; j<this.ForestSlotLenght; j++){
 				ForestSlot forestSlot = forestSlots[i, j].GetComponent<ForestSlot>();

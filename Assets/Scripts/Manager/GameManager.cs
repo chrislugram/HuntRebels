@@ -19,7 +19,7 @@ public static class GameManager {
 	private static GameObject		characterGO;
 	private static INPUT_MODE		inputMode;
 	private static bool				pauseFlag;
-	private static bool				inGameFlag;
+	private static bool				inGameFlag = false;
 	private static CoroutineTask	timeTask;
 	#endregion
 	
@@ -57,12 +57,14 @@ public static class GameManager {
 	public static void SetGame(Game game){
 		currentGame = game;
 		currentGameStats = new GameStats ();
+		inGameFlag = false;
 	}
 
 	public static void StartGame(){
 		if (characterGO.GetComponent<SpeederBike> ().Waiting) {
 			characterGO.GetComponent<SpeederBike> ().Run (currentGame.maxSpeed);
 			timeTask = TaskManager.Launch (TimeCounter ());
+			inGameFlag = true;
 		}
 	}
 

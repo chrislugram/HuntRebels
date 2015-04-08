@@ -17,7 +17,8 @@ public class GameState : StateApp {
 	#region METHODS_UNITY
 	void Update(){
 		if (GameManager.InGame) {
-			labelTimeInGame.text = Util.MilisecondsInClockFormat (GameManager.TimeGame);
+			string value = Util.MilisecondsInClockFormat (GameManager.TimeGame);
+			labelTimeInGame.text = value;
 		}
 	}
 	#endregion
