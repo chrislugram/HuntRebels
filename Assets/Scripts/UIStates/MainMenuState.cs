@@ -24,6 +24,8 @@ public class MainMenuState : StateApp {
 	public override void Activate (){
 		base.Activate ();
 
+		GameManager.InputMode = GameManager.INPUT_MODE.KEYBOARD;
+
 		newGame = new Game ();
 
 		int maxMiliSeconds = UserManager.GetBestTimeOf (newGame.totalEnemies);
