@@ -9,6 +9,7 @@ public class GameState : StateApp {
 	#region FIELDS
 	public Text				labelTimeInGame;
 	public ForestGenerator	forestGenerator;
+	public GameObject		alertGO;
 	#endregion
 	
 	#region ACCESSORS
@@ -17,7 +18,9 @@ public class GameState : StateApp {
 	#region METHODS_UNITY
 	void Update(){
 		if (GameManager.InGame) {
-			labelTimeInGame.text = Util.MilisecondsInClockFormat (GameManager.TimeGame);
+			string value = Util.MilisecondsInClockFormat (GameManager.TimeGame);
+			labelTimeInGame.text = value;
+			alertGO.SetActive(false);
 		}
 	}
 	#endregion
@@ -25,6 +28,10 @@ public class GameState : StateApp {
 	#region METHODS_CUSTOM
 	public override void Activate (){
 		base.Activate ();
+
+		Debug.Log("asdfaadfasfadsf");
+
+		labelTimeInGame.text = "00:00";
 
 		forestGenerator.CreateForest ();
 	}

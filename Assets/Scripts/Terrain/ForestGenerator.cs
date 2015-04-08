@@ -52,7 +52,7 @@ public class ForestGenerator : MonoBehaviour {
 	#region METHODS_UNITY
 	void Update(){
 		//Codigo real, comprobando la posicion del Personaje
-		if (generated) {
+		if (generated && (characterTransform != null)) {
 			int cellXCharacter = Mathf.Abs(Mathf.RoundToInt (InitForest - (characterTransform.position.x))); //  (((sizeSquad/2f)-parentForest.transform.position.x) / sizeSquad);
 			cellXCharacter = cellXCharacter / (int)sizeSlot;
 			
@@ -178,7 +178,7 @@ public class ForestGenerator : MonoBehaviour {
 	}
 
 	public void UpdateForest(int newCellX, int newCellZ){
-		Debug.Log (" " + newCellX + ", " + newCellZ);
+		//Debug.Log (" " + newCellX + ", " + newCellZ);
 		for (int i=0; i<this.ForestSlotLenght; i++) {
 			for(int j=0; j<this.ForestSlotLenght; j++){
 				ForestSlot forestSlot = forestSlots[i, j].GetComponent<ForestSlot>();

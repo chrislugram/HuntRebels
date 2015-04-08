@@ -37,7 +37,7 @@ public class Health : MonoBehaviour {
 	public void Damage(int n){
 		health -= n;
 
-		Debug.Log ("vida total que queda: " + health);
+		//Debug.Log ("vida total que queda: " + health);
 
 		if (health <= 0) {
 			onDeath ();

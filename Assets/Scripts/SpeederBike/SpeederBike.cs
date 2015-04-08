@@ -11,6 +11,8 @@ public class SpeederBike : MonoBehaviour {
 	public float 			maxVelocity = 30;
 	public float			maxAngleModelRotation = 10;
 	public Transform		modelTransform;
+	public Transform		cameraTransform;
+	public HealthUI[]		healthUIs;
 
 	private Vector3			directionMove = Vector3.zero;
 	private Rigidbody		rigidbodySB;
@@ -18,6 +20,7 @@ public class SpeederBike : MonoBehaviour {
 	private Spawner			weapon;
 	private DetectorFOV		detector;
 	private bool			runFlag = false;
+	private Health			healthSpeederBike;
 	#endregion
 	
 	#region ACCESSORS
@@ -32,6 +35,9 @@ public class SpeederBike : MonoBehaviour {
 		weapon = this.GetComponent<Spawner> ();
 		detector = GetComponent<DetectorFOV> ();
 		detector.onDetectElement += HandleonDetectElement;
+		healthSpeederBike = GetComponent<Health> ();
+		healthSpeederBike.onReciveDamage += HandleonReciveDamage;
+		healthSpeederBike.onDeath += HandleonDeath;
 
 		runFlag = false;
 
@@ -54,14 +60,15 @@ public class SpeederBike : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		Destroy (this.gameObject);
+		if (collision.gameObject.layer != AppLayers.LAYER_ENEMY_BULLET) {
+			HandleonDeath();
+		}
 	}
 
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;
 		Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
 		Gizmos.DrawRay(transform.position, direction);
-		
 	}
 	#endregion
 	
@@ -69,6 +76,11 @@ public class SpeederBike : MonoBehaviour {
 	public void Run(int maxSpeed){
 		this.maxVelocity = maxSpeed;
 		runFlag = true;
+	}
+
+	public void Stop(){
+		this.maxVelocity = 0;
+		runFlag = false;
 	}
 
 	private void UpdateDirection(){
@@ -88,10 +100,12 @@ public class SpeederBike : MonoBehaviour {
 	}
 
 	private void UpdateModelRotation(){
-		if (rotateAngle != 0) {
-			modelTransform.localRotation = Quaternion.Lerp (modelTransform.localRotation, Quaternion.Euler (0, 0, maxAngleModelRotation * rotateAngle), Time.deltaTime * accelerationRotation);
-		} else {
-			modelTransform.localRotation = Quaternion.Lerp (modelTransform.localRotation, Quaternion.identity, Time.deltaTime * accelerationRotation);
+		if (modelTransform != null) {
+			if (rotateAngle != 0) {
+				modelTransform.localRotation = Quaternion.Lerp (modelTransform.localRotation, Quaternion.Euler (0, 0, maxAngleModelRotation * rotateAngle), Time.deltaTime * accelerationRotation);
+			} else {
+				modelTransform.localRotation = Quaternion.Lerp (modelTransform.localRotation, Quaternion.identity, Time.deltaTime * accelerationRotation);
+			}
 		}
 
 		rotateAngle = 0;
@@ -103,6 +117,21 @@ public class SpeederBike : MonoBehaviour {
 	#endregion
 
 	#region EVENTS
+	private void HandleonDeath (){
+		cameraTransform.parent = this.transform;
+		Destroy (modelTransform.gameObject);
+		maxVelocity = 0;
+		this.GetComponent<Collider> ().enabled = false;
+
+		GameManager.GameFail ();
+	}
+	
+	private void HandleonReciveDamage (float percHealth){
+		for (int i = 0; i < healthUIs.Length; i++) {
+			healthUIs[i].UpdateEnemyUI(percHealth);
+		}
+	}
+
 	private void HandleonDetectElement (GameObject obj){
 		//Vector3 direction = obj.transform.position - weapon.spawnPoint [0].position;
 		if (runFlag) {

@@ -21,9 +21,10 @@ public static class GameManager {
 	private static GameObject		characterGO;
 	private static INPUT_MODE		inputMode;
 	private static bool				pauseFlag;
-	private static bool				inGameFlag;
+	private static bool				inGameFlag = false;
 	private static CoroutineTask	timeTask;
 	private static List<Transform>	enemyInstances;
+	private static bool				winFlag = false;
 	#endregion
 	
 	#region ACCESSORS
@@ -54,6 +55,10 @@ public static class GameManager {
 	public static bool	InGame{
 		get { return inGameFlag; }
 	}
+
+	public static bool	WinGame{
+		get { return winFlag; }
+	}
 	#endregion
 	
 	#region METHODS_CUSTOM
@@ -61,13 +66,19 @@ public static class GameManager {
 		currentGame = game;
 		currentGameStats = new GameStats ();
 		enemyInstances = new List<Transform> (currentGame.totalEnemies);
+		inGameFlag = false;
 	}
 
 	public static void StartGame(){
 		if (characterGO.GetComponent<SpeederBike> ().Waiting) {
 			characterGO.GetComponent<SpeederBike> ().Run (currentGame.maxSpeed);
 			timeTask = TaskManager.Launch (TimeCounter ());
+			inGameFlag = true;
 		}
+	}
+
+	public static void ResetStats(){
+		currentGameStats = new GameStats ();
 	}
 
 	public static GameObject CreateCharacter(){
@@ -89,33 +100,33 @@ public static class GameManager {
 		return enemyInstant;
 	}
 
-	public static Transform GetNearEnemy(Vector3 position){
-		enemyInstances.RemoveAll (delegate (Transform o) {
-			return o == null;
-		});
-
-		float maxDistance = float.MaxValue;
-		Transform result = null;
-		foreach (Transform t in enemyInstances) {
-			float distance = Vector3.Distance(t.position, position);
-
-			if (distance < maxDistance){
-				maxDistance = distance;
-				result = t;
-			}
-		}
-
-		Debug.Log ("GetNearEnemy: " + result);
-
-		return result;
-	}
-
 	public static void EnemyDestroyed(){
 		currentGameStats.totalEnemyDestroyed++;
 
 		if (currentGameStats.totalEnemyDestroyed == currentGame.totalEnemies) {
 			GameWin();
 		}
+	}
+
+	public static Transform GetNearEnemy(Vector3 position){
+		enemyInstances.RemoveAll (delegate (Transform o) {
+			return o == null;
+		});
+		
+		float maxDistance = float.MaxValue;
+		Transform result = null;
+		foreach (Transform t in enemyInstances) {
+			float distance = Vector3.Distance(t.position, position);
+			
+			if (distance < maxDistance){
+				maxDistance = distance;
+				result = t;
+			}
+		}
+		
+		Debug.Log ("GetNearEnemy: " + result);
+		
+		return result;
 	}
 
 	public static void Pause(){
@@ -128,16 +139,26 @@ public static class GameManager {
 		}
 	}
 
-	private static void GameWin(){
+	public static void GameWin(){
 		Debug.Log("Gana el jugador");
+		winFlag = true;
 		timeTask.Stop ();
 		enemyInstances.Clear ();
+
+		RootApp.Instance.ChangeState (StateReferenceApp.TYPE_STATE.END);
+
+		characterGO.GetComponent<SpeederBike> ().Stop();
 	}
 
-	private static void GameFail(){
-		Debug.Log("Pierde el jugador");
-		timeTask.Stop ();
-		enemyInstances.Clear ();
+	public static void GameFail(){
+		if (!winFlag) {
+			Debug.Log("Pierde el jugador");
+			winFlag = false;
+			timeTask.Stop ();
+			enemyInstances.Clear ();
+			
+			RootApp.Instance.ChangeState (StateReferenceApp.TYPE_STATE.END);
+		}
 	}
 
 	private static IEnumerator TimeCounter(){

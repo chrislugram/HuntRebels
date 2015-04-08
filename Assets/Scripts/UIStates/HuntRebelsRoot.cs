@@ -20,6 +20,7 @@ public class HuntRebelsRoot : RootApp {
 	protected override void InitRootApp (){
 		//Inicializo Sistemas
 		TaskManager.Init ();
+		//PlayerPrefs.DeleteAll ();
 			
 		//Inicializamos los estados
 		states = new Dictionary<StateReferenceApp.TYPE_STATE, string> ();
@@ -29,6 +30,7 @@ public class HuntRebelsRoot : RootApp {
 		states.Add (StateReferenceApp.TYPE_STATE.INIT_MENU, StateReferenceApp.INIT_MENU);
 		states.Add (StateReferenceApp.TYPE_STATE.MAIN_MENU, StateReferenceApp.MAIN_MENU);
 		states.Add (StateReferenceApp.TYPE_STATE.GAME, StateReferenceApp.GAME);
+		states.Add (StateReferenceApp.TYPE_STATE.END, StateReferenceApp.END);
 		/*states.Add (StateReferenceApp.TYPE_STATE.CONFIGURE_STAGE_STATE, StateReferenceApp.CONFIGURE_STAGE_STATE);
 		states.Add (StateReferenceApp.TYPE_STATE.GAME_STATE, StateReferenceApp.GAME_STATE);
 		states.Add (StateReferenceApp.TYPE_STATE.WIN_GAME_STATE, StateReferenceApp.WIN_GAME_STATE);

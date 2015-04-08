@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EnemyTower : MonoBehaviour {
@@ -14,7 +14,7 @@ public class EnemyTower : MonoBehaviour {
 	public STATE_TOWER						stateTower = STATE_TOWER.WAITING;
 	public float							reloadTime = 1;
 	public DetectorFOV						detector;
-	public EnemyUI							enemyUI;
+	public HealthUI							enemyUI;
 
 	protected Spawner						weapon;
 	protected Transform						towerTransform;

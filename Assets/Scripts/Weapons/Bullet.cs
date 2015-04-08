@@ -31,7 +31,8 @@ public class Bullet : SpawnElement {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		if (collision.gameObject.layer == AppLayers.LAYER_ENEMY) {
+		Debug.Log ("Choco con..." + collision.gameObject.name);
+		if (collision.gameObject.layer == AppLayers.LAYER_ENEMY || collision.gameObject.layer == AppLayers.LAYER_PC) {
 			collision.gameObject.GetComponent<Health>().Damage(damage);
 		}
 

@@ -25,6 +25,13 @@ public class MainMenuState : StateApp {
 		base.Activate ();
 
 		newGame = new Game ();
+
+		int maxMiliSeconds = UserManager.GetBestTimeOf (newGame.totalEnemies);
+		if (maxMiliSeconds == int.MaxValue) {
+			labelBestTime.text = "--:--";
+		} else {
+			labelBestTime.text = Util.MilisecondsInClockFormat(maxMiliSeconds);
+		}
 	}
 	#endregion
 	

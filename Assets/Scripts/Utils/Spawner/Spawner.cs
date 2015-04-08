@@ -82,9 +82,11 @@ public class Spawner : MonoBehaviour {
 			totalSpawnerElementCreated++;
 		}else{
 			spawnElementInstance = spawnElements.Dequeue();
-			spawnElementInstance.transform.position = spawnPointSelected.position;
-			spawnElementInstance.transform.rotation = Quaternion.identity;
-			spawnElementInstance.SetActive(true);
+			if (spawnElementInstance != null && spawnPointSelected != null){
+				spawnElementInstance.transform.position = spawnPointSelected.position;
+				spawnElementInstance.transform.rotation = Quaternion.identity;
+				spawnElementInstance.SetActive(true);
+			}
 		}
 		
 		return spawnElementInstance;
