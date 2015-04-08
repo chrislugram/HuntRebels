@@ -1,5 +1,7 @@
 using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public static class GameManager {
 	#region STATIC_ENUM_CONSTANTS
@@ -21,6 +23,7 @@ public static class GameManager {
 	private static bool				pauseFlag;
 	private static bool				inGameFlag;
 	private static CoroutineTask	timeTask;
+	private static List<Transform>	enemyInstances;
 	#endregion
 	
 	#region ACCESSORS
@@ -57,6 +60,7 @@ public static class GameManager {
 	public static void SetGame(Game game){
 		currentGame = game;
 		currentGameStats = new GameStats ();
+		enemyInstances = new List<Transform> (currentGame.totalEnemies);
 	}
 
 	public static void StartGame(){
@@ -80,7 +84,30 @@ public static class GameManager {
 			enemyPrefab = (GameObject)Resources.Load(PATH_ENEMY_PREFAB);
 		}
 
-		return (GameObject) GameObject.Instantiate(enemyPrefab);
+		GameObject enemyInstant = (GameObject) GameObject.Instantiate(enemyPrefab);
+		enemyInstances.Add (enemyInstant.transform);
+		return enemyInstant;
+	}
+
+	public static Transform GetNearEnemy(Vector3 position){
+		enemyInstances.RemoveAll (delegate (Transform o) {
+			return o == null;
+		});
+
+		float maxDistance = float.MaxValue;
+		Transform result = null;
+		foreach (Transform t in enemyInstances) {
+			float distance = Vector3.Distance(t.position, position);
+
+			if (distance < maxDistance){
+				maxDistance = distance;
+				result = t;
+			}
+		}
+
+		Debug.Log ("GetNearEnemy: " + result);
+
+		return result;
 	}
 
 	public static void EnemyDestroyed(){
@@ -104,11 +131,13 @@ public static class GameManager {
 	private static void GameWin(){
 		Debug.Log("Gana el jugador");
 		timeTask.Stop ();
+		enemyInstances.Clear ();
 	}
 
 	private static void GameFail(){
 		Debug.Log("Pierde el jugador");
 		timeTask.Stop ();
+		enemyInstances.Clear ();
 	}
 
 	private static IEnumerator TimeCounter(){

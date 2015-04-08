@@ -55,7 +55,7 @@ public class EnemyTower : MonoBehaviour {
 		if (stateTower == STATE_TOWER.WAITING) {
 			SearchCharacter ();
 
-			if (characterTransform != null) {
+			if (characterTransform != null && !characterTransform.GetComponent<SpeederBike>().Waiting) {
 				stateTower = STATE_TOWER.RELOAD;
 			}
 		} else if (stateTower == STATE_TOWER.RELOAD) {
